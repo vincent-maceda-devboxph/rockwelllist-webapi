@@ -31,6 +31,16 @@ module.exports = {
             next(err);
         }
     },
+    getById: async (req, res, next) => {
+        const { itemId } = req.params;
+
+        try {
+            const items = await Items.findById(itemId).populate('similar_items', 'name', Items);
+            res.status(200).json(items);
+        } catch(err) {
+            next(err);
+        }
+    }
 }
 
 module.exports.testRoute = (req, res, next) => {
