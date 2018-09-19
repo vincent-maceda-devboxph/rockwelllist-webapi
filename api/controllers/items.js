@@ -42,9 +42,3 @@ module.exports = {
         }
     }
 }
-
-module.exports.testRoute = (req, res, next) => {
-    res.status(200).json({
-        message: 'Items test api works!'
-    });
-  };

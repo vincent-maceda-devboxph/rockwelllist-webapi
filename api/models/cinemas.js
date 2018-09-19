@@ -2,11 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const cinemasSchema = new mongoose.Schema({
-    _id: Schema.Types.ObjectId,
     itemType: String,
     renderType: String,
     name: String,
-    imageUrl:{
+    image_url:{
         type: String,
         default: null
     },
@@ -18,12 +17,12 @@ const cinemasSchema = new mongoose.Schema({
         type: String,
         default: null
     },
-    trailerUrl: String,
+    trailer_url: String,
     genre:{
         type: String,
         default: null
     },
-    mtrcbRating: {
+    mtrcb_rating: {
         type: String,
         default: null
     },
@@ -31,7 +30,7 @@ const cinemasSchema = new mongoose.Schema({
         theaterName: String,
         openingDate: Date
     }],
-    bookingUrl: String
+    booking_url: String
 });
 
 module.exports = mongoose.model('Cinemas', cinemasSchema);
