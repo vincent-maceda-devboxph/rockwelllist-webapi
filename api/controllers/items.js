@@ -1,4 +1,5 @@
 const Items = require('../models/tenants');
+var mongoose = require('mongoose');
 
 module.exports = {
     addItems: async (req, res, next) => {
@@ -27,11 +28,16 @@ module.exports = {
                                    .populate('similar_items', 'name', Items)
                                    .sort({"name": 1});
             }
+
+            var _items = chunkArray(items, limit);
+            var item_index = getItemChunkIndex(_items, start_id);
+            var next_id = getNextId(_items, item_index);
+
             var item_summary = {
                 "pagination": {
-                    "next": "5ba206fc3d20ff31503659fc"
+                    "next": next_id
                 },
-                "data": items
+                "data": _items[item_index]
             };
 
             res.status(200).json(item_summary);
@@ -49,6 +55,48 @@ module.exports = {
             next(err);
         }
     }
+}
+
+function getNextId(items, index){
+    if(items.length > index)
+    {
+        items = items[index+1];
+        var next_id = items[0]._id.toString();
+        return items[0]._id.toString();;
+    }
+}
+
+function getItemChunkIndex(items, item_id){
+    boolean: isIndex = false;
+    Number: index = 0;
+    Number: item_index = 0;
+    if(item_id == 0)
+        return item_index;
+    
+    for(index = 0; index < items.length; index++){
+        items[index].forEach(function (value, i){
+            if(value._id.toString() == item_id)
+                isIndex = true;
+        });
+        if(isIndex){
+            item_index =  index;
+            index = items.length;
+        }
+    }
+    return item_index;
+}
+
+function chunkArray(items, limit){
+    var index = 0;
+    var itemLength = items.length;
+    var tempItemArr = [];
+
+    for(index = 0; index < itemLength; index += limit){
+        var chunkItemArr = items.slice(index, index + limit);
+        tempItemArr.push(chunkItemArr);
+    }
+
+    return tempItemArr;
 }
 
 function getItemType(cat){
