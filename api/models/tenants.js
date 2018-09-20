@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const tenantsSchema = new mongoose.Schema({
-    itemType: String,
-    renderType: String,
+    item_type: String,
+    render_type: String,
     name: {type: String, text: true},
     image_url: {
         type: String,
@@ -12,7 +12,7 @@ const tenantsSchema = new mongoose.Schema({
     writeup: String,
     description: String,
     location: String,
-    phone_num: String,
+    phone_num: Array,
     rockwellist_picks: [{
         name: String,
         imageUrl:{

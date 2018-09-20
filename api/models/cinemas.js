@@ -27,8 +27,8 @@ const cinemasSchema = new mongoose.Schema({
         default: null
     },
     availability: [{
-        theaterName: String,
-        openingDate: Date
+        theater_name: String,
+        opening_date: Date
     }],
     booking_url: String
 });

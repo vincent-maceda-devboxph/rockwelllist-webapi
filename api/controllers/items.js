@@ -12,21 +12,29 @@ module.exports = {
     },
     getAll: async (req, res, next) => {
         try {
-            let category = req.query.category;
-            let limit = parseInt(req.query.limit);
-            let name_like = req.query.name_like;
-            let start_id = req.query.start_id;
-            
-            //For Search
-            // const items = await Items.find({
-            //     "$text": {
-            //         "$search": 'name_like' 
-            //     }
-            // }).populate('similar_items', 'name', Items).limit(limit).sort({"name": 1});
+            var category = getItemType(req.query.category);
+            var limit = parseInt(req.query.limit);
+            var name_like = req.query.name_like;
+            var start_id = req.query.start_id;
+            var items = [];
 
-            const items =  await Items.find({}).populate('similar_items', 'name', Items).sort({"name": 1});
+            if(typeof name_like == "undefined")
+            {
+                items =  await Items.find(category != "" ? {item_type: category}: {}).populate('similar_items', 'name', Items).sort({"name": 1});
+            }
+            else{
+                items = await Items.find(category != "" ? {item_type: category, name: {$regex: new RegExp(name_like, 'i')}}: {name: {$regex: new RegExp(name_like, 'i')}})
+                                   .populate('similar_items', 'name', Items)
+                                   .sort({"name": 1});
+            }
+            var item_summary = {
+                "pagination": {
+                    "next": "5ba206fc3d20ff31503659fc"
+                },
+                "data": items
+            };
 
-            res.status(200).json(items);
+            res.status(200).json(item_summary);
         } catch(err) {
             next(err);
         }
@@ -42,3 +50,20 @@ module.exports = {
         }
     }
 }
+
+function getItemType(cat){
+    switch(cat){
+        case 'Store':
+            return "store-v1";
+            break;
+        case 'Restaurant':
+            return "restaurant-v1";
+            break;
+        case 'Activity':
+            return "activity-v1";
+            break;
+        default:
+            return "";
+            break;
+    }
+};
