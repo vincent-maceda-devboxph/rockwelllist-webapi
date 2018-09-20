@@ -138,7 +138,7 @@ app.use((req, res, next) => {
   // Routes
   app.use("/v1/items", itemsRoutes);
   app.use("/v1/movies", moviesRoutes);
-  app.use('/v1/auth', authRoutes);
+  app.use(authRoutes);
   app.use('/user', userRoutes);
   
   app.use((req, res, next) => {
