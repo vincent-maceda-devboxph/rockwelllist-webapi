@@ -13,6 +13,7 @@ var crypto = require("crypto");
 var app = express();
 var configAuth = require('./api/configs/FbAuth');
 var morgan = require('morgan');
+var databaseAuth = require('./api/configs/database');
 
 var itemsRoutes = require('./api/routes/items');
 var authRoutes = require("./api/routes/authentication");
@@ -112,7 +113,9 @@ passport.deserializeUser(function(user, done) {
 });
 
 
-mongoose.connect("mongodb://admin:admin1234@ds259732.mlab.com:59732/rockwellist-api",{
+var connectionString = "mongodb://"+databaseAuth.dbAuth.username + ":" + databaseAuth.dbAuth.password + "@" + databaseAuth.dbAuth.host + ":" + databaseAuth.dbAuth.port + "/" + databaseAuth.dbAuth.dataBase;
+
+mongoose.connect(connectionString,{
     useMongoClient: true
 });
 mongoose.Promise = global.Promise;

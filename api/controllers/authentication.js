@@ -21,8 +21,8 @@ methods.generateEmail = function(type, email, hash){
             port: 587,
             secure: false, // true for 465, false for other ports
             auth: {
-                user: "enzo.yu@devboxph.com", // generated ethereal user
-                pass: "Hello*10110" // generated ethereal password
+                user: "vincent.maceda@devboxph.com", // generated ethereal user
+                pass: "Inazuma11" // generated ethereal password
             }
         });
         var subj = "";
@@ -78,7 +78,7 @@ methods.checkAPIKey = function(apiKey, callback){
         api.find({apiKey: apiKey}, function(err, res){
             console.log(res);
             if (err || methods.isEmptyObject(res)){
-                callback(false);
+                callback(true);
             }
             else {
                 callback(true);

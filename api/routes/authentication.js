@@ -346,7 +346,7 @@ router.post("/auth/email/registration", function(req,res){
             res.status(403);
             return res.send("You are not authorized to access");
         }
-    })
+    });
 });
 
 //REST for Signin
