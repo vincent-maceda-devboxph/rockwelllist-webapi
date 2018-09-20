@@ -29,18 +29,24 @@ module.exports = {
                                    .sort({"name": 1});
             }
 
-            var _items = chunkArray(items, limit);
-            var item_index = getItemChunkIndex(_items, start_id);
-            var next_id = getNextId(_items, item_index);
+            if(typeof start_id != "undefined" || !isNaN(limit))
+            {
+                var _items = chunkArray(items, limit);
+                var item_index = getItemChunkIndex(_items, start_id);
+                var next_id = getNextId(_items, item_index);
 
-            var item_summary = {
-                "pagination": {
-                    "next": next_id
-                },
-                "data": _items[item_index]
-            };
+                var item_summary = {
+                    "pagination": {
+                        "next": next_id
+                    },
+                    "data": _items[item_index]
+                };
 
-            res.status(200).json(item_summary);
+                res.status(200).json(item_summary);
+            }
+            else
+                res.status(200).json(items);
+            
         } catch(err) {
             next(err);
         }

@@ -1,19 +1,41 @@
-const mongoose = require('mongoose');
+var mongoose = require("mongoose");
+var passportLocalMongoose = require("passport-local-mongoose");
+var crypto = require("crypto");
+var bcrypt = require("bcrypt");
+// var cartProductSchema = require("../models/cartProduct.js");
 
-const userSchema = mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
-    firstName: String,
-    lastName: String,
-    username: String,
-    password: String,
-    userType: Number,
-    eMail: { 
-        type: String, 
-        match: /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/
-    },
-    isActive: Boolean,
-    scope: String,
-    dateCreated: Date
+
+var userSchema = new mongoose.Schema({
+	username: String,
+	signupEmail: String,
+	firstName: String,
+	lastName: String,
+	password: String,
+	birthDate: String,
+	sex: String,
+	mobileNumber: String,
+	isValidated: String,
+	accessCode: String,
+	forgotPassword: String,
+	facebook: {
+		id: String,
+		token: String,
+		email: String,
+		name: String
+	}
+	
 });
 
-module.exports = mongoose.model('User', userSchema);
+userSchema.pre('save', function(next){
+    var user = this;
+    if (!user.isModified('password')) {
+       return next()
+    }
+
+    user.password = bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+    next()
+});
+
+userSchema.plugin(passportLocalMongoose, {usernameField: "username"});
+
+module.exports = mongoose.model("User", userSchema);
