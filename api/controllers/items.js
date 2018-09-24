@@ -19,14 +19,15 @@ module.exports = {
             var name_like = req.query.name_like;
             var start_id = req.query.start_id;
             var items = [];
+            var similar_items = ["name", "item_type", "writeup", "location", "image_url"];
 
             if(typeof name_like == "undefined")
             {
-                items =  await Items.find(typeof category != "undefined" ? {item_type: category}: {}).populate('similar_items', 'name', Items).sort({"name": 1});
+                items =  await Items.find(typeof category != "undefined" ? {item_type: category}: {}).populate('similar_items', similar_items, Items).sort({"name": 1});
             }
             else{
                 items = await Items.find(typeof category != "undefined" ? {item_type: category, name: {$regex: new RegExp(name_like, 'i')}}: {name: {$regex: new RegExp(name_like, 'i')}})
-                                   .populate('similar_items', 'name', Items)
+                                   .populate('similar_items', similar_items, Items)
                                    .sort({"name": 1});
             }
 

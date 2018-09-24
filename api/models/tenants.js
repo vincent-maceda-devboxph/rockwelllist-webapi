@@ -15,7 +15,7 @@ const tenantsSchema = new mongoose.Schema({
     phone_num: Array,
     rockwellist_picks: [{
         name: String,
-        imageUrl:{
+        image_url:{
             type: String,
             default: null
         }
