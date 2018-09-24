@@ -2,6 +2,7 @@ const Movies = require('../models/cinemas');
 var Cinemas_Summary = require('../models/cinemas_summary');
 var moment = require('moment');
 var pagination = require('../utils/pagination');
+var search = require('../utils/search');
 
 module.exports = {
     addItems: async (req, res, next) => {
@@ -26,111 +27,23 @@ module.exports = {
 
             if(typeof availability != "undefined" && typeof theater_name != "undefined")
             {
-                if(availability.toLowerCase() == "now showing")
-                {
-                    for(var i = movies.length - 1; i >= 0; i--) 
-                    {
-                        var obj = movies[i];
-                        var ifNotNowShowing = false;
-                        for(var x = 0; x < obj.availability.length; x++)
-                        {
-                            if(!moment(dateNow).isAfter(obj.availability[x].opening_date))
-                            {
-                                if(theater_name == obj.availability[x].theater_name)
-                                    ifNotNowShowing = true;
-                            }
-                        }
-                        if(ifNotNowShowing)
-                        {
-                            movies.splice(i, 1);
-                        }
-                            
-                    }
-                }
-                else if(availability.toLowerCase() == "coming soon")
-                {
-                    for(var i = movies.length - 1; i >= 0; i--) 
-                    {
-                        var obj = movies[i];
-                        var ifNotComingSoon = false;
-                        for(var x = 0; x < obj.availability.length; x++)
-                        {
-                            if(!moment(obj.availability[x].opening_date).isAfter(dateNow))
-                            {
-                                if(theater_name == obj.availability[x].theater_name)
-                                    ifNotComingSoon = true;
-                            }   
-                        }
-                        if(ifNotComingSoon)
-                        {
-                            movies.splice(i, 1);
-                        }
-                    }
-                    
-                } 
+                var { i, obj, ifNotNowShowing, x, ifNotComingSoon } = search.getMoviesWithAvailabiltyAndTheaterName(availability, movies, dateNow, theater_name); 
             }
             else if(typeof availability != "undefined" && typeof theater_name == "undefined")
             {
-                if(availability.toLowerCase() == "now showing")
-                {
-                    for(var i = movies.length - 1; i >= 0; i--) 
-                    {
-                        var obj = movies[i];
-                        var ifNotNowShowing = false;
-                        for(var x = 0; x < obj.availability.length; x++)
-                        {
-                            if(!moment(dateNow).isAfter(obj.availability[x].opening_date))
-                            {
-                                    ifNotNowShowing = true;
-                            }
-                        }
-                        if(ifNotNowShowing)
-                        {
-                            movies.splice(i, 1);
-                        }
-                            
-                    }
-                }
-                else if(availability.toLowerCase() == "coming soon")
-                {
-                    for(var i = movies.length - 1; i >= 0; i--) 
-                    {
-                        var obj = movies[i];
-                        var ifNotComingSoon = false;
-                        for(var x = 0; x < obj.availability.length; x++)
-                        {
-                            if(!moment(obj.availability[x].opening_date).isAfter(dateNow))
-                            {
-                                ifNotComingSoon = true;
-                            }   
-                        }
-                        if(ifNotComingSoon)
-                        {
-                            movies.splice(i, 1);
-                        }
-                    }
-                    
-                } 
+                var i;
+                var obj;
+                var ifNotNowShowing;
+                var x;
+                var ifNotComingSoon;
+                ({ i, obj, ifNotNowShowing, x, ifNotComingSoon, i, ifNotNowShowing, x, ifNotComingSoon } = search.getMovieWithAvailability(availability, i, movies, obj, ifNotNowShowing, x, dateNow, ifNotComingSoon)); 
             }
             else if(typeof availability == "undefined" && typeof theater_name != "undefined")
             {
-                for(var i = movies.length - 1; i >= 0; i--) 
-                    {
-                        var obj = movies[i];
-                        var isTheaterName = false;
-                        for(var x = 0; x < obj.availability.length; x++)
-                        {
-                            if(obj.availability[x].theater_name == theater_name)
-                            {                                
-                                isTheaterName = true;
-                            }
-                        }
-                        if(!isTheaterName)
-                        {
-                            movies.splice(i, 1);
-                        }
-                            
-                    }
+                var i;
+                var obj;
+                var x;
+                ({ i, obj, x, i, x } = search.getMoviesWithTheaterName(i, movies, obj, x, theater_name));
             }
 
             if(typeof start_id != "undefined" || !isNaN(limit))
@@ -195,3 +108,4 @@ module.exports = {
         }
     }
 }
+
