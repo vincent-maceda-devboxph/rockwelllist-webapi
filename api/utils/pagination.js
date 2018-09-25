@@ -8,9 +8,9 @@ module.exports = {
                 var next_id = items[0]._id.toString();
                 return items[0]._id.toString();
             }
-            return {};
+            return undefined;
         }
-        return {};
+        return undefined;
     },
     getItemChunkIndex: function(items, item_id){
         boolean: isIndex = false;

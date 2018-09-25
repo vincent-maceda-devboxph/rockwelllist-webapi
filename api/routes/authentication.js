@@ -9,6 +9,8 @@ var api = require("../models/api");
 var authController = require("../controllers/authentication.js");
 const nodemailer = require('nodemailer');
 var moment = require('moment');
+const jwt = require("jsonwebtoken");
+var _jwt = require('../configs/jwt');
 
 // moment.setDefaultFormat('YYYY-MM-DDTHH:mm:ss.SSSZ');
 
@@ -389,8 +391,15 @@ router.post("/auth/email/login", passport.authenticate("local"), function(req, r
                                     "sex": req.user.sex,
                                     "mobile_number": req.user.mobileNumber
                                 }
-                            }
+                            };
                         }
+
+                        var token = jwt.sign({
+                            data: relevantData
+                        }, _jwt.JWT_KEY, {expiresIn: "1h"});
+
+                        relevantData.access_token = token;
+                        
                         console.log("-----------------------------------------")
                         return res.send(relevantData);
                     })

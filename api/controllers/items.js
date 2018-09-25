@@ -18,6 +18,7 @@ module.exports = {
             var limit = parseInt(req.query.limit);
             var name_like = req.query.name_like;
             var start_id = req.query.start_id;
+            var top = (req.query.top == 'true');
             var items = [];
             var similar_items = ["name", "item_type", "writeup", "location", "image_url"];
 
@@ -33,15 +34,18 @@ module.exports = {
 
             if(typeof start_id != "undefined" || !isNaN(limit))
             {
-                var _items = pagination.chunkArray(items, limit);
+                var sorted_items = top == true ? pagination.sortItemsWithFeatured(items) : items;
+                var _items = pagination.chunkArray(sorted_items, limit);
                 var item_index = pagination.getItemChunkIndex(_items, start_id);
                 var next_id = pagination.getNextId(_items, item_index, items.length);
+                var itemSummary = limit != 0 ? _items[item_index] : _items;
+                
 
                 var item_summary = {
                     "pagination": {
                         "next": next_id
                     },
-                    "data": pagination.sortItemsWithFeatured(limit != 0 ? _items[item_index] : _items)
+                    "data": itemSummary
                 };
 
                 res.status(200).json(item_summary);
