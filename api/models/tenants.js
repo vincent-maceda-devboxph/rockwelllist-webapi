@@ -11,6 +11,7 @@ const tenantsSchema = new mongoose.Schema({
     },
     writeup: String,
     description: String,
+    featured: Boolean,
     location: String,
     phone_num: Array,
     rockwellist_picks: [{

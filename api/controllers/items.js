@@ -35,13 +35,13 @@ module.exports = {
             {
                 var _items = pagination.chunkArray(items, limit);
                 var item_index = pagination.getItemChunkIndex(_items, start_id);
-                var next_id = pagination.getNextId(_items, item_index);
+                var next_id = pagination.getNextId(_items, item_index, items.length);
 
                 var item_summary = {
                     "pagination": {
                         "next": next_id
                     },
-                    "data": _items[item_index]
+                    "data": pagination.sortItemsWithFeatured(limit != 0 ? _items[item_index] : _items)
                 };
 
                 res.status(200).json(item_summary);
