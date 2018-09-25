@@ -18,6 +18,7 @@ module.exports = {
         try {
             var availability = req.query.availability;
             var theater_name = req.query.theater_name;
+            var top = (req.query.top == 'true');
             var limit = parseInt(req.query.limit);
             var start_id = req.query.start_id;
             var dateNow = new Date();
@@ -48,7 +49,8 @@ module.exports = {
 
             if(typeof start_id != "undefined" || !isNaN(limit))
             {
-                var _movies = pagination.chunkArray(movies, limit);
+                var sorted_movies = top == true ? pagination.sortItemsWithFeatured(movies) : movies;
+                var _movies = pagination.chunkArray(sorted_movies, limit);
                 var movie_index = pagination.getItemChunkIndex(_movies, start_id);
                 var next_id = pagination.getNextId(_movies, movie_index);
                 var _data = _movies[movie_index];
