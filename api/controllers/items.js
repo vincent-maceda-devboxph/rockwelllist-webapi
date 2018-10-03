@@ -67,6 +67,31 @@ module.exports = {
             next(err);
         }
     },
+    updateById: async(req, res, next) => {
+        const { itemId } = req.params;
+        try{
+            const items = await Items.findOneAndUpdate({_id: itemId}, req.body);
+            res.status(200).json(items);
+        }
+        catch(err){
+            next(err);
+        }
+    },
+    deleteById: async(req, res, next) => {
+        const { itemId } = req.params;
+        try{
+            Items.findByIdAndRemove(itemId, (err, todo) => {
+                const response = {
+                    message: "Item successfully deleted",
+                    id: todo._id
+                };
+                return res.status(200).send(response);
+            });
+        }
+        catch(err){
+            next(err);
+        }
+    },
     getByFeatured: async (req, res, next) => {
         try {
             const items = await Items.find({featured:true}).populate('similar_items', 'name', Items);

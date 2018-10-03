@@ -108,6 +108,39 @@ module.exports = {
         } catch(err) {
             next(err);
         }
+    },
+    updateById: async(req, res, next) => {
+        const { movieId } = req.params;
+        try{
+            const movie = await Movies.findOneAndUpdate({_id: movieId}, req.body);
+            res.status(200).json(movie);
+        }
+        catch(err){
+            next(err);
+        }
+    },
+    deleteById: async(req, res, next) => {
+        const { movieId } = req.params;
+        try{
+            Movies.findByIdAndRemove(movieId, (err, todo) => {
+                const response = {
+                    message: "Movie successfully deleted",
+                    id: todo._id
+                };
+                return res.status(200).send(response);
+            });
+        }
+        catch(err){
+            next(err);
+        }
+    },
+    getByFeatured: async (req, res, next) => {
+        try {
+            const movies = await Movies.find({featured:true}).sort({"name": 1});
+            res.status(200).json(movies);
+        } catch(err) {
+            next(err);
+        }
     }
 }
 
