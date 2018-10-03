@@ -7,6 +7,8 @@ var router = express.Router();
 
 router.get("/", [checkAuth, checkApi.checkAPIKey], itemsController.getAll)
       .post("/" ,[checkAuth, checkApi.checkAPIKey], itemsController.addItems);
+router.get("/featured", [checkAuth, checkApi.checkAPIKey], itemsController.getByFeatured);
 router.get("/:itemId", [checkAuth, checkApi.checkAPIKey], itemsController.getById);
+
 
 module.exports = router;

@@ -66,6 +66,14 @@ module.exports = {
         } catch(err) {
             next(err);
         }
+    },
+    getByFeatured: async (req, res, next) => {
+        try {
+            const items = await Items.find({featured:true}).populate('similar_items', 'name', Items);
+            res.status(200).json(items);
+        } catch(err) {
+            next(err);
+        }
     }
 }
 

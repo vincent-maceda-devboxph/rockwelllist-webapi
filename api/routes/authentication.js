@@ -107,9 +107,10 @@ router.get('/user/me', function(req,res){
     req.headers['x-api-key'] = req.sanitize(req.headers['x-api-key']);
     var accessCode = req.headers.authorization;
     accessCode = accessCode.replace("Bearer ", "");
+    var decodedToken = jwt.decode(accessCode);
     // console.log(req.user);
     // var userThrow= req.sanitize(req.user.username);
-    authController.data.getUserDetails({accessCode: accessCode}, function(users){
+    authController.data.getUserDetails({_id: decodedToken.data._id}, function(users){
         // var birthDay = users[0].birthDate.getFullYear()+'-'+('0'+(users[0].birthDate.getMonth()+1)).slice(-2)+'-'+('0' + users[0].birthDate.getDate()).slice(-2);
         // var newDate = new Date(birthDay);
         var tempThrow = {
@@ -377,7 +378,8 @@ router.post("/auth/email/login", passport.authenticate("local"), function(req, r
                         var relevantData = {
                             username: req.user.username,
                             'access_token': req.user.accessCode,
-                            'is_new_user': is_new_user
+                            'is_new_user': is_new_user,
+                            _id: req.user._id
                         };
                         if (!is_new_user){
                             relevantData = {
@@ -390,7 +392,8 @@ router.post("/auth/email/login", passport.authenticate("local"), function(req, r
                                     "birthdate": req.user.birthDate,
                                     "sex": req.user.sex,
                                     "mobile_number": req.user.mobileNumber
-                                }
+                                },
+                                _id: req.user._id
                             };
                         }
 
