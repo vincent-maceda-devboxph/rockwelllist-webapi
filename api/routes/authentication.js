@@ -167,14 +167,22 @@ router.post("/auth/email/forgot", function(req,res){
                         }
                         else{
                             authController.data.generateEmail("passwordResetEmail", req.body.username, resetToken);
-                            return res.send({});
+                            return res.send({
+                                "success": {
+                                    "message": "Password reset successful"
+                                }
+                            });
                         }
                     })
                 }
             })
         } else{
             res.status(403);
-            return res.send("You are not authorized to perform this action");
+            return res.send({
+                "error": {
+                    "message": "Password reset failed"
+                }
+            });
         }
     })
 });
