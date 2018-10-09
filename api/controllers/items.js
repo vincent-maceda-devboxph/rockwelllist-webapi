@@ -45,7 +45,7 @@ module.exports = {
                 for(var x = 0; x < itemSummary.length; x++)
                 {
                     var _data = {
-                        "item_id": itemSummary[x]._id,
+                        "_id": itemSummary[x]._id,
                         "item_type": itemSummary[x].item_type,
                         "name":itemSummary[x].name,
                         "writeup":itemSummary[x].writeup,
@@ -80,7 +80,7 @@ module.exports = {
                     // });
 
                     var _data = {
-                        "item_id": sorted_items[x]._id,
+                        "_id": sorted_items[x]._id,
                         "item_type": sorted_items[x].item_type,
                         "name":sorted_items[x].name,
                         "writeup":sorted_items[x].writeup,
