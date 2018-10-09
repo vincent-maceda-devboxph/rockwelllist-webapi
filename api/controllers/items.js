@@ -108,7 +108,12 @@ module.exports = {
         const { itemId } = req.params;
 
         try {
-            const items = await Items.findById(itemId).populate('similar_items', 'name', Items);
+            var items = await Items.findById(itemId).populate('similar_items', 'item_type name writeup thumbnail_url location', Items);
+            //const items = await Items.findById(itemId).populate('similar_items');
+            str = JSON.stringify(items);
+            str = str.replace(/\"thumbnail_url\":/g, "\"image_url\":");
+            items = JSON.parse(str);
+
             res.status(200).json(items);
         } catch(err) {
             next(err);
@@ -142,6 +147,7 @@ module.exports = {
     getByFeatured: async (req, res, next) => {
         try {
             const items = await Items.find({featured:true}).populate('similar_items', 'name', Items);
+            //const items = await Items.find({featured:true}).populate('similar_items', item_summary_model);
             res.status(200).json(items);
         } catch(err) {
             next(err);
