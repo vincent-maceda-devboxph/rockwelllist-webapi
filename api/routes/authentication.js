@@ -333,7 +333,7 @@ router.post("/auth/email/registration", function(req,res){
     req.headers['x-api-key'] = req.sanitize(req.headers['x-api-key']);
     
     if(req.body.sex != "m" && req.body.sex != "f")
-    {
+    { 
         res.status(400);
         res.send("Invalid input for Sex");
     }
