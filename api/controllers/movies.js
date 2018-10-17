@@ -109,7 +109,7 @@ module.exports = {
         const { movieId } = req.params;
 
         try {
-            const movies = await Movies.findById(movieId);
+            const movies = await Movies.findById(movieId, { "__v" : 0, "availability._id" : 0 });
             res.status(200).json(movies);
         } catch(err) {
             next(err);
