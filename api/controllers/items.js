@@ -113,13 +113,20 @@ module.exports = {
         const { itemId } = req.params;
 
         try {
-
-                var items = await Items.findById(itemId).populate('similar_items', 'item_type name writeup thumbnail_url location', Items);
+                //to confirm image_url - thumbnail_irl
+                var items = await Items.findById(itemId).populate('similar_items', 'item_type name writeup thumbnail_url image_url location', Items);
                 console.log(items);
                 //const items = await Items.findById(itemId).populate('similar_items');
-                str = JSON.stringify(items);
-                str = str.replace(/\"thumbnail_url\":/g, "\"image_url\":");
-                items = JSON.parse(str);
+                // str = JSON.stringify(items);
+                // str = str.replace(/\"thumbnail_url\":/g, "\"image_url\":");
+                // items = JSON.parse(str);
+                items.thumbnail_url = undefined;
+
+                for(var i = 0; i < items.similar_items.length; i++)
+                {
+                    items.similar_items[i].image_url = items.similar_items[i].thumbnail_url;
+                    items.similar_items[i].thumbnail_url = undefined;
+                }
 
                 if(items != null) {
                     res.status(200).json(items);
