@@ -32,10 +32,10 @@ module.exports = {
                     credit_amount: egc[0].amount,
                     claimed: egc[0].claimed
                 }
-                res.send(_egc);
+                res.status(200).send(_egc);
             }
             else{
-                res.send({message: "Resource under given ID does not exist"});
+                res.status(404).send({message: "Resource under given ID does not exist"});
             }
         }
         catch(err){
