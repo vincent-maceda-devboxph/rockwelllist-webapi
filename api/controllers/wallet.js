@@ -198,7 +198,12 @@ module.exports = {
         }
         catch(err){
             console.log(err);
-            next(err);
+            var obj = {
+                "pagination": {},
+                "data": []
+            };
+
+            res.status(200).json(obj);
         }
     },
     paymentToken: async (req, res, next) =>{
