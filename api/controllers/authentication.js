@@ -139,7 +139,7 @@ module.exports = {
             }
             else{
                 generateEmail("passwordResetEmail", req.body.username, resetToken);
-                return res.send(response_msgs.succecss_msgs.EmailSent);
+                return res.send(response_msgs.success_msgs.EmailSent);
             }
         }
         catch(err){
@@ -159,7 +159,7 @@ module.exports = {
             }
             else{
                 var _user = await user.findOneAndUpdate({_id: usr._id}, {password: pwhash});
-                return res.send(response_msgs.succecss_msgs.PasswordReset);
+                return res.send(response_msgs.success_msgs.PasswordReset);
             }
         }
         catch(err){
@@ -455,7 +455,7 @@ module.exports = {
             var access_token = await AccessToken.find({user: _user});
             if(access_token.length > 0){
                 var acc = await AccessToken.remove({user: _user});
-                res.send(response_msgs.succecss_msgs.Logout);
+                res.send(response_msgs.success_msgs.Logout);
             }
         }
         catch(err){
@@ -516,9 +516,9 @@ function isLoggedIn (req, res, next) {
 generateEmail = function(type, email, hash){
     nodemailer.createTestAccount((err, account) => {
         let transporter = nodemailer.createTransport({
-            host: 'smtp.office365.com',
-            port: 587,
-            secure: false, // true for 465, false for other ports
+            host: configs.nodemailer.host,
+            port: configs.nodemailer.port,
+            secure: configs.nodemailer.secure, // true for 465, false for other ports
             auth: {
                 user: process.env.EMAIL, // generated ethereal user
                 pass: process.env.PASSWORD // generated ethereal password
@@ -547,7 +547,7 @@ generateEmail = function(type, email, hash){
 
         // setup email data with unicode symbols
         let mailOptions = {
-            from: 'vincent.maceda@devboxph.com', // sender address
+            from: configs.nodemailer.senderAddress, // sender address
             to: email, // list of receivers
             subject: subj, // Subject line
             text: 'Hello world?', // plain text body
