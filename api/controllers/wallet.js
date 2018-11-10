@@ -244,8 +244,8 @@ module.exports = {
                 date_expired: paymentToken.date_expires.getTime(),
                 token: paymentToken.qr_code
             }
-
-             res.send(resp);
+            console.log(resp);
+            res.send(resp);
         }
         catch(err){
             console.log(err);
