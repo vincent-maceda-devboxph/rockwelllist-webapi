@@ -25,8 +25,7 @@ module.exports = {
                         amount: egc.amount,
                         egc: egc,
                         transaction_date: new Date(),
-                        wallet: wallet[0],
-                        status: "SUCCESSFUL"
+                        wallet: wallet[0]
                     });
 
                     var _claims = await claims.save();
@@ -42,39 +41,11 @@ module.exports = {
                     res.status(200).send(respose);
                 }
                 else{
-                    var claims = new Claims({
-                        amount: egc.amount,
-                        egc: egc,
-                        transaction_date: new Date(),
-                        wallet: wallet[0],
-                        status: "UNSUCCESSFUL"
-                    });
-                    var _claims = await claims.save();
-
-                    res.status(400).send({
-                        _id: _egc._id,
-                        tracking_id: _egc.tracking_id,
-                        credit_amount: _egc.amount,
-                        message: "Error: Coupon already redeemed."
-                    });
+                    res.status(404).send({message: "Error: Coupon already redeemed."});
                 }
             }
             else{
-                var claims = new Claims({
-                    amount: egc.amount,
-                    egc: egc,
-                    transaction_date: new Date(),
-                    wallet: wallet[0],
-                    status: "UNSUCCESSFUL"
-                });
-                var _claims = await claims.save();
-
-                res.status(400).send({
-                    _id: _egc._id,
-                    tracking_id: _egc.tracking_id,
-                    credit_amount: _egc.amount,
-                    message: "Error: Coupon invalid."
-                });
+                res.status(404).send({message: "Error: Coupon invalid."});
             }
         } catch(err) {
             next(err);
@@ -251,7 +222,7 @@ module.exports = {
 
             var wallet_payment = new Payment({
                 wallet: wallet,
-                status: "INSUCCESSFUL",
+                status: "PENDING",
                 transaction_date: new Date(),
 
             });
