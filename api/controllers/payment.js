@@ -138,7 +138,7 @@ async function getWalletAmount(wallet){
     });
 
     payment.forEach(element => {
-        if(element.amount != undefined)
+        if(element.amount != undefined && element.status != "PENDING" && element.status != "UNSUCCESSFUL")
             totalPayment += element.amount;
     });
 
