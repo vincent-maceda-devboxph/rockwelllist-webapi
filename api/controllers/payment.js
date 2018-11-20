@@ -22,7 +22,7 @@ module.exports = {
             var _wallet_payment = await Payment.findById(decodedToken._id);
 
             if(amount < 0){
-                res.status(400).send(response_msgs.error_msgs.AmoungLessThanZero);
+                return res.status(400).send(response_msgs.error_msgs.AmoungLessThanZero);
             }
     
             var walletAmount = await getWalletAmount(_wallet);
