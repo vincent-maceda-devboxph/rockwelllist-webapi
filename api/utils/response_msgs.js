@@ -30,7 +30,7 @@ module.exports = {
         EGCExpired: {error_code: 400, error_message: "E-GC already expired."},
         WalletNotFound: {error_code: 404, error_message: "Wallet not found."},
         //Check APP version
-        NeedToUpdate: {error_code: 400, error_message: "Application needs to be updated."},
+        NeedToUpdate: {error_code: 426, error_message: "Application needs to be updated."},
         AppVersionInvalid: {error_code: 400, error_message: "Invalid app version supplied."},
     },
     success_msgs: {

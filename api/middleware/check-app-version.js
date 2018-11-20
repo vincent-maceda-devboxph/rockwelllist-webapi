@@ -12,7 +12,7 @@ module.exports = {
 
             if(!Number.isNaN(iOSversion) && Number.isNaN(androidVersion)){
                 if(iOSversion < app_version.IOS){
-                    return res.status(400).send(response_msgs.error_msgs.NeedToUpdate);
+                    return res.status(426).send(response_msgs.error_msgs.NeedToUpdate);
                 }
                 else{
                     next();
@@ -20,7 +20,7 @@ module.exports = {
             }
             else if(!Number.isNaN(androidVersion) && Number.isNaN(iOSversion)){
                 if(androidVersion < app_version.android){
-                    return res.status(400).send(response_msgs.error_msgs.NeedToUpdate);
+                    return res.status(426).send(response_msgs.error_msgs.NeedToUpdate);
                 }
                 else{
                     next();
