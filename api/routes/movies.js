@@ -5,7 +5,8 @@ var checkAuth = require('../middleware/check-auth');
 var checkApi = require('../middleware/check-api');
 
 var router = express.Router();
-var middleware = [checkAuth, checkApi.checkAPIKey, checkAppVersion.checkVersion];
+//var middleware = [checkAuth, checkApi.checkAPIKey, checkAppVersion.checkVersion];
+var middleware = [checkAuth, checkApi.checkAPIKey];
 
 router.get("/", middleware, moviesController.getAll)
       .post("/", middleware, moviesController.addItems)
