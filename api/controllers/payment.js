@@ -37,7 +37,8 @@ module.exports = {
                 _wallet_payment = await Payment.findByIdAndUpdate(_wallet_payment._id, {tenant: _tenant, amount: amount, tracking_id: tracking_id, transaction_date: new Date(), status: "SUCCESSFUL"});
     
                 res.status(200).json({
-                    message: "Payment Successful."
+                    message: "Payment Successful.",
+                    tracking_id: tracking_id
                 })
             }
           }  
