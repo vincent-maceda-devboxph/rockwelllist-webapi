@@ -15,11 +15,12 @@ module.exports = {
     payment: async (req, res, next) => {
         try{
             var amount = parseFloat(req.sanitize(req.body.amount));
-            var decodedToken = jwt.verify(req.body.token, 'secret');
-            var tracking_id = decodedToken._id;
             var _tenant = await Tenant.findById(req.sanitize(req.body.tenant_id));
+
+            var decodedToken = jwt.verify(req.body.token, 'secret');
             var _wallet = await Wallet.findById(decodedToken.wallet);
             var _wallet_payment = await Payment.findById(decodedToken._id);
+            var tracking_id = decodedToken._id;
 
             if(amount < 0){
                 return res.status(400).send(response_msgs.error_msgs.AmoungLessThanZero);
@@ -42,6 +43,9 @@ module.exports = {
             }
           }  
         catch(err){
+            if(err.name == "TokenExpiredError"){
+                return res.status(400).send(response_msgs.error_msgs.TokenExpire)
+            }
             console.log(err);
             next(err);
         }
