@@ -8,6 +8,7 @@ var router = express.Router();
 var middleware = [checkAuth, checkApi.checkAPIKey, checkAppVersion.checkVersion];
 
 router.post("/", egcController.create_coupon);
+router.get("/", egcController.getAllEgc);
 router.get("/transactions", egcController.load_transactions);
 router.get("/:coupon_id", middleware, egcController.getCouponDetails);
 router.post("/load", egcController.load_egc);

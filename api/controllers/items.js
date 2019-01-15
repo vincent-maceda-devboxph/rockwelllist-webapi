@@ -151,8 +151,41 @@ module.exports = {
             res.status(200).json(item_summary);
         }
     },
+    getByFeatured: async (req, res, next) => {
+        try {
+            const items = await Items.find({featured:true}).populate('similar_items', 'name', Items);
+            //const items = await Items.find({featured:true}).populate('similar_items', item_summary_model);
+            res.status(200).json(items);
+        } catch(err) {
+            next(err);
+        }
+    },
+    geItemsCMS: async (req, res, next) => {
+        try{
+            var itemAll = await Items.find({});
+
+            res.send(itemAll);
+        }
+        catch(err){
+            console.log(err);
+            next(err);
+        }
+    },
+    getTenantDetailsCMS: async (req, res, next) => {
+        try{
+            var tenant_id = req.params.tenant_id;
+
+            var item = await Items.findById(tenant_id).populate('similar_items', 'name', Items);
+
+            res.send(item);
+        }
+        catch(err){
+            console.log(err);
+            next(err);
+        }
+    },
     updateById: async(req, res, next) => {
-        const { itemId } = req.params;
+        const itemId = req.body._id;
         try{
             const items = await Items.findOneAndUpdate({_id: itemId}, req.body);
             res.status(200).json(items);
@@ -173,15 +206,6 @@ module.exports = {
             });
         }
         catch(err){
-            next(err);
-        }
-    },
-    getByFeatured: async (req, res, next) => {
-        try {
-            const items = await Items.find({featured:true}).populate('similar_items', 'name', Items);
-            //const items = await Items.find({featured:true}).populate('similar_items', item_summary_model);
-            res.status(200).json(items);
-        } catch(err) {
             next(err);
         }
     }

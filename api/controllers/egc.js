@@ -101,6 +101,17 @@ module.exports = {
 
             res.status(200).json(obj);
         }
+    },
+    getAllEgc: async (req, res, next) => {
+        try{
+            var egcs = await Egc.find({});
+
+            res.send(egcs);
+        }
+        catch(err){
+            console.log(err);
+            next(err);
+        }
     }
 }
 
