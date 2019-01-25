@@ -112,6 +112,40 @@ module.exports = {
             console.log(err);
             next(err);
         }
+    },
+    getAllEgcSold: async (req, res, next) => {
+        try{
+            var egcs = await Egc.find({});
+
+            egcs.forEach(function (value, i){
+                if(typeof value.amount == "undefined"){
+                    egcs.splice(i, 1);
+                }
+            });
+
+            res.send(egcs);
+        }
+        catch(err){
+            console.log(err);
+            next(err);
+        }
+    },
+    getAllEgcLoaded: async (req, res, next) => {
+        try{
+            var egcs = await Egc.find({});
+
+            egcs.forEach(function (value, i){
+                if(typeof value.claimed == "undefined" || !value.claimed){
+                    egcs.splice(i, 1);
+                }
+            });
+
+            res.send(egcs);
+        }
+        catch(err){
+            console.log(err);
+            next(err);
+        }
     }
 }
 

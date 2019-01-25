@@ -9,4 +9,6 @@ var middleware = [checkAuth, checkApi.checkAPIKey, checkAppVersion.checkVersion]
 
 router.post("/", paymentController.payment);
 router.get("/:token_id", middleware, paymentController.payment_status);
+router.get("/tenant/claims", paymentController.tenantClaims);
+router.get("/tenant/claims/:tenant", paymentController.tenantClaimDetails);
 module.exports = router;

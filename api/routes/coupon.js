@@ -12,5 +12,7 @@ router.get("/", egcController.getAllEgc);
 router.get("/transactions", egcController.load_transactions);
 router.get("/:coupon_id", middleware, egcController.getCouponDetails);
 router.post("/load", egcController.load_egc);
+router.get("/cms/sold", egcController.getAllEgcSold);
+router.get("/cms/loaded", egcController.getAllEgcLoaded);
 
 module.exports = router;
