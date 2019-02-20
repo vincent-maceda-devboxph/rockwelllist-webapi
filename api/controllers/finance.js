@@ -236,8 +236,8 @@ module.exports = {
                 port: 587,     // secure SMTP
                 secure: false, // false for TLS - as a boolean not string - but the default is false so just remove this completely
                 auth: {
-                    user: 'vincent.maceda@devboxph.com',
-                    pass: 'Jajaja19'
+                    user: process.env.EMAIL,
+                    pass: process.env.PASSWORD
                 },
                 tls: {
                     rejectUnauthorized: false
