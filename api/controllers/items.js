@@ -151,6 +151,41 @@ module.exports = {
             res.status(200).json(item_summary);
         }
     },
+    getByName: async (req, res, next) => {
+        const { itemName } = req.params;
+
+        try {
+                //to confirm image_url - thumbnail_irl
+                var items = await Items.findOne({name: itemName}).populate('similar_items', 'item_type name writeup thumbnail_url image_url location', Items);
+                console.log(items);
+                items.thumbnail_url = undefined;
+
+                for(var i = 0; i < items.similar_items.length; i++)
+                {
+                    items.similar_items[i].image_url = items.similar_items[i].thumbnail_url;
+                    items.similar_items[i].thumbnail_url = undefined;
+                }
+
+                if(items != null) {
+                    res.status(200).json(items);
+                } else {
+                    var item_summary = {
+                        "pagination": {},
+                        "data": []
+                    };
+        
+                    res.status(200).json(item_summary);
+                }
+        } catch(err) {
+            //next(err);
+            var item_summary = {
+                "pagination": {},
+                "data": []
+            };
+
+            res.status(200).json(item_summary);
+        }
+    },
     getByFeatured: async (req, res, next) => {
         try {
             const items = await Items.find({featured:true}).populate('similar_items', 'name', Items);

@@ -18,5 +18,6 @@ router.post("/" ,middleware, itemsController.addItems)
       .put("/cms", itemsController.updateById)
       .delete("/", middleware, itemsController.deleteById);
 router.get("/get/cms/:tenant_id", itemsController.getTenantDetailsCMS);
+router.get("/get/cms/name/:itemName", itemsController.getByName);
 
 module.exports = router;

@@ -14,7 +14,7 @@ var app = express();
 var configAuth = require('./api/configs/FbAuth');
 var morgan = require('morgan');
 var databaseAuth = require('./api/configs/database');
-var environment = require('dotenv').config();
+// var environment = require('dotenv').config();
 
 var itemsRoutes = require('./api/routes/items');
 var authRoutes = require("./api/routes/authentication");
@@ -23,6 +23,7 @@ var userRoutes = require('./api/routes/user');
 var walletRoutes = require('./api/routes/wallet');
 var egcRoutes = require('./api/routes/coupon');
 var paymentRoutes = require('./api/routes/payment');
+var financeRoutes = require('./api/routes/finance');
 
 //Passport declarations
 app.use(require("express-session")({
@@ -165,6 +166,7 @@ app.use((req, res, next) => {
   app.use("/v1/wallet", walletRoutes);
   app.use("/v1/coupon", egcRoutes);
   app.use("/v1/payment", paymentRoutes);
+  app.use("/v1/finance", financeRoutes);
   app.use(authRoutes);
   app.use('/user', userRoutes);
   
