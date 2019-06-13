@@ -3,6 +3,7 @@ var Cinemas_Summary = require('../models/cinemas_summary');
 var moment = require('moment');
 var pagination = require('../utils/pagination');
 var search = require('../utils/search');
+var session_id = "BGpjecgthmTDuk1JXv5x7QndlPAWrayKb9zU3HZL4CiNEwV2Is";
 
 module.exports = {
     addItems: async (req, res, next) => {
@@ -11,6 +12,16 @@ module.exports = {
             const movies = await newMovies.save();
             res.status(201).json(movies);
         } catch(err) {
+            next(err);
+        }
+    },
+    getAllv2: async(req, res, next) => {
+        try{
+            var movies = await getSchedules();
+            return null;
+        }
+        catch(err){
+            console.log(err);
             next(err);
         }
     },
@@ -221,4 +232,22 @@ module.exports = {
         }
     },
 }
+
+async function getSchedules(){
+    return new Promise(function(resolve, reject){
+        request({method: 'Get', 
+            headers: {'Authorization' : session_id},
+            uri: 'http://114.108.254.186:6060/api/v2/schedules'}, 
+            function(error, resp, body){
+                if(resp.statusCode == 200){
+                    resolve(JSON.parse(resp.body));
+                  } else {
+                    console.log('error: '+ resp.statusCode)
+                    console.log(body)
+                    reject(body);
+                  }
+            });
+    })
+}
+
 
